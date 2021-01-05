@@ -192,48 +192,60 @@ public class MainActivity extends AppCompatActivity {
     public class BrowseRegistryListener extends DefaultRegistryListener {
 
         /* Discovery performance optimization for very slow Android devices! */
+//        @Override
+//        public void remoteDeviceDiscoveryStarted(Registry registry, RemoteDevice device) {
+//            deviceAdded(device);
+//        }
+//
+//        @Override
+//        public void remoteDeviceDiscoveryFailed(Registry registry, final RemoteDevice device, final Exception ex) {
+//            Log.d("dhhhhhh", "Discovery failed of '" + device.getDisplayString() + "': "
+//                    + (ex != null ? ex.toString() : "Couldn't retrieve device/service descriptors"));
+//            runOnUiThread(new Runnable() {
+//                public void run() {
+//                    Toast.makeText(
+//                            MainActivity.this,
+//                            "Discovery failed of '" + device.getDisplayString() + "': "
+//                                    + (ex != null ? ex.toString() : "Couldn't retrieve device/service descriptors"),
+//                            Toast.LENGTH_LONG
+//                    ).show();
+//                }
+//            });
+//            deviceRemoved(device);
+//        }
+//        /* End of optimization, you can remove the whole block if your Android handset is fast (>= 600 Mhz) */
+
+//        @Override
+//        public void remoteDeviceAdded(Registry registry, RemoteDevice device) {
+//            deviceAdded(device);
+//        }
+
         @Override
-        public void remoteDeviceDiscoveryStarted(Registry registry, RemoteDevice device) {
+        public void deviceAdded(Registry registry, Device device) {
+            super.deviceAdded(registry, device);
             deviceAdded(device);
         }
 
         @Override
-        public void remoteDeviceDiscoveryFailed(Registry registry, final RemoteDevice device, final Exception ex) {
-            Log.d("dhhhhhh", "Discovery failed of '" + device.getDisplayString() + "': "
-                    + (ex != null ? ex.toString() : "Couldn't retrieve device/service descriptors"));
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(
-                            MainActivity.this,
-                            "Discovery failed of '" + device.getDisplayString() + "': "
-                                    + (ex != null ? ex.toString() : "Couldn't retrieve device/service descriptors"),
-                            Toast.LENGTH_LONG
-                    ).show();
-                }
-            });
-            deviceRemoved(device);
-        }
-        /* End of optimization, you can remove the whole block if your Android handset is fast (>= 600 Mhz) */
-
-        @Override
-        public void remoteDeviceAdded(Registry registry, RemoteDevice device) {
-            deviceAdded(device);
-        }
-
-        @Override
-        public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
+        public void deviceRemoved(Registry registry, Device device) {
+            super.deviceRemoved(registry, device);
             deviceRemoved(device);
         }
 
-        @Override
-        public void localDeviceAdded(Registry registry, LocalDevice device) {
-            deviceAdded(device);
-        }
+//        @Override
+//        public void remoteDeviceRemoved(Registry registry, RemoteDevice device) {
+//            deviceRemoved(device);
+//        }
 
-        @Override
-        public void localDeviceRemoved(Registry registry, LocalDevice device) {
-            deviceRemoved(device);
-        }
+//        @Override
+//        public void localDeviceAdded(Registry registry, LocalDevice device) {
+//            deviceAdded(device);
+//        }
+//
+//        @Override
+//        public void localDeviceRemoved(Registry registry, LocalDevice device) {
+//            deviceRemoved(device);
+//        }
 
         public void deviceAdded(final Device device) {
             runOnUiThread(new Runnable() {
@@ -261,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static final ServiceType AV_TRANSPORT_SERVICE = new UDAServiceType("AVTransport");
+
     public void touPing(View view) {
         clingDialog = ClingDialog.newInstance(new ChoiceDeviceListener() {
             @Override
@@ -276,13 +289,11 @@ public class MainActivity extends AppCompatActivity {
                 String metadata = null;
 
 
-                        VideoItem videoItem = new VideoItem("id", "0", "name", creator, res);
-                        metadata = createItemMetadata(videoItem);
+                VideoItem videoItem = new VideoItem("id", "0", "name", creator, res);
+                metadata = createItemMetadata(videoItem);
 
 
-
-
-                mControlPoint.execute(new SetAVTransportURI(avtService, source1, metadata) {
+                mControlPoint.execute(new SetAVTransportURI(avtService, source1) {
                     @Override
                     public void success(ActionInvocation invocation) {
                         super.success(invocation);
@@ -295,6 +306,19 @@ public class MainActivity extends AppCompatActivity {
 //                        curState = ERROR;
                     }
                 });
+//                mControlPoint.execute(new SetAVTransportURI(avtService, source1, metadata) {
+//                    @Override
+//                    public void success(ActionInvocation invocation) {
+//                        super.success(invocation);
+////                        curState = PLAY;
+//                    }
+//
+//                    @Override
+//                    public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
+////                        Log.e(TAG,"play error:"+defaultMsg);
+////                        curState = ERROR;
+//                    }
+//                });
 
             }
         });
