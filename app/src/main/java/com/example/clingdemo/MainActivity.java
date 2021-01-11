@@ -23,6 +23,7 @@ import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 
 import org.fourthline.cling.android.AndroidUpnpService;
+import org.fourthline.cling.controlpoint.ActionCallback;
 import org.fourthline.cling.controlpoint.ControlPoint;
 import org.fourthline.cling.model.action.ActionInvocation;
 import org.fourthline.cling.model.message.UpnpResponse;
@@ -35,6 +36,8 @@ import org.fourthline.cling.model.types.UDAServiceType;
 import org.fourthline.cling.registry.DefaultRegistryListener;
 import org.fourthline.cling.registry.Registry;
 import org.fourthline.cling.support.avtransport.callback.SetAVTransportURI;
+
+import org.fourthline.cling.support.avtransport.callback.Stop;
 import org.fourthline.cling.support.model.DIDLObject;
 import org.fourthline.cling.support.model.ProtocolInfo;
 import org.fourthline.cling.support.model.Res;
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private ManagerDLNA managerDLNA;
 
     private String source1 = "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4";
+    private Service avtService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -278,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
         clingDialog = ClingDialog.newInstance(new ChoiceDeviceListener() {
             @Override
             public void choiceDevice(Device device) {
-                final Service avtService = device.findService(AV_TRANSPORT_SERVICE);
+                avtService = device.findService(AV_TRANSPORT_SERVICE);
                 ControlPoint mControlPoint = upnpService.getControlPoint();
 
                 long size = 0;
@@ -405,7 +409,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void tuiChu(View view) {
+        this.upnpService.getControlPoint().execute(new Stop(avtService) {
+            @Override
+            public void failure(ActionInvocation invocation, UpnpResponse operation, String defaultMsg) {
 
+            }
+        });
     }
 
     public interface ChoiceDeviceListener {
