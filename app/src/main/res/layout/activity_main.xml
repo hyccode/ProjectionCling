@@ -28,8 +28,21 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="tuiChu"
+            android:onClick="stop"
             android:text="退出"></Button>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="pause"
+            android:text="暂停"></Button>
+
+        <Switch
+            android:id="@+id/switch_mute"
+            android:layout_width="wrap_content"
+            android:background="@color/white"
+            android:layout_height="wrap_content"
+            android:text="静音"></Switch>
 
         <TextView
             android:id="@+id/tv_message"

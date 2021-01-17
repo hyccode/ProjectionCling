@@ -1,6 +1,5 @@
 package com.example.clingdemo;
 
-import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -48,21 +47,23 @@ public class ClingDialog extends BaseDialog {
                 choiceDeviceListener.choiceDevice(deviceAdapter.getItem(position).getDevice());
             }
         });
+        if (choiceDeviceListener != null) {
+            choiceDeviceListener.startSearch();
+        }
     }
 
     public void remove(DeviceDisplay deviceDisplay) {
+        if (deviceAdapter == null) {
+            return;
+        }
         deviceAdapter.remove(deviceDisplay);
     }
 
-    public int getPosition(DeviceDisplay d) {
-        return deviceAdapter.getData().indexOf(d);
-    }
-
-    public void insert(DeviceDisplay d, int position) {
-
-    }
 
     public void add(DeviceDisplay d) {
+        if (deviceAdapter == null) {
+            return;
+        }
         deviceAdapter.addData(d);
     }
 }
